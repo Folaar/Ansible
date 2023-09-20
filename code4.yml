@@ -1,10 +1,10 @@
 ---
-- hosts: all
+- hosts: db
   become: yes
   gather_facts: false
   ignore_errors: true
-  vars:
-      ansible_python_interpreter: /usr/bin/python
+  # vars:
+  #     ansible_python_interpreter: /usr/bin/python3
   tasks:
   # - name: Download artifacts from nexus
   #   get_url:
@@ -12,15 +12,15 @@
   #   dest: /tmp
   #    url_username: admin
   #    url_password: devops
-    - name: install python3
-      package:
-         name: python3
-         state: present
+    # - name: install python3
+    #   package:
+    #      name: python3
+    #      state: present
 
     - name: Download artifacts from nexus
       uri:
         url:  http://198.58.119.40:8081/repository/prof-repo/bioMedical-0.0.6-SNAPSHOT.jar
-        dest: /tmp/uri.jar
+        dest: /tmp
         method: GET
         url_username: admin
         url_password: devops

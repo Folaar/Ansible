@@ -27,23 +27,23 @@
        - name: check uptime
          command: uptime
          tags:
-             -cm
+           - cm
        - name: install softwares
          package:
            state: present
            name: "{{item}}"
          loop: 
            - wget
-           - finger
+          #  - finger
            - curl
-          #  - ntp
+           #  - ntp
        - name : install passwd 
          apt:
             name: passwd
             state: present
          when : ansible_distribution not in "Debian, Ubuntu"
          tags:
-           -app1
+           - app1
        - name: create group
          group:
              name: cloudteam
