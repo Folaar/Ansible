@@ -1,0 +1,18 @@
+---
+- hosts: all
+  become: yes
+  gather_facts: false
+  ignore_errors: true
+  tasks:
+     - name: Check uptime
+       command: uptime
+       register: uptime_output
+     - name: create user
+       user:
+         name: fola
+         comment: fola admin
+       when: uptime_output.changed == "false"
+     - name: display output
+       debug:
+         var: uptime_output
+     

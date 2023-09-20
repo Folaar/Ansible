@@ -1,0 +1,39 @@
+---
+- hosts: all
+  become: yes
+  gather_facts: false
+  ignore_errors: true
+  vars:
+      ansible_python_interpreter: /usr/bin/python
+  tasks:
+  # - name: Download artifacts from nexus
+  #   get_url:
+  #   url: http://198.58.119.40:8081/#browse/browse:folarin_repo/bioMedical-0.0.1-SNAPSHOT.jar
+  #   dest: /tmp
+  #    url_username: admin
+  #    url_password: devops
+    - name: install python3
+      package:
+         name: python3
+         state: present
+
+    - name: Download artifacts from nexus
+      uri:
+        url:  http://198.58.119.40:8081/repository/prof-repo/bioMedical-0.0.6-SNAPSHOT.jar
+        dest: /tmp/uri.jar
+        method: GET
+        url_username: admin
+        url_password: devops
+    - name: Install lxml
+      package:
+         name: python3-lxml
+         state: present 
+    - name: download artifact
+      maven_artifact:
+        group_id: qa
+        version: 0.0.7-SNAPSHOT
+        artifact_id: bioMedical
+        repository_url: 'http://198.58.119.40:8081/repository/prof-repo'
+        username: admin
+        password: devops
+        dest: /tmp/maven.jar

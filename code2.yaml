@@ -1,11 +1,42 @@
 ---
 - hosts: all
   become: yes
-  gather_facts: yes
+  gather_facts: false
+  ignore_errors: true
   vars: 
       user_name: Folaade
       collor: red
   tasks: 
+      #  - name : install software
+      #    pacakage:
+      #     state: present
+      #     name:
+      #       - wget
+      #       - ntp
+      #       - finger
+      #       - curl
+      #  - name: install softwares
+      #    package:
+      #     state: present
+      #     name: "{{ item }}"
+      #    with_items:
+      #           - wget
+      #           - ntp
+      #           - finger
+      #           - curl
+       - name: check uptime
+         command: uptime
+         tags:
+             -cm
+       - name: install softwares
+         package:
+           state: present
+           name: "{{item}}"
+         loop: 
+           - wget
+           - finger
+           - curl
+          #  - ntp
        - name : install passwd 
          apt:
             name: passwd
@@ -23,9 +54,10 @@
               name:  "{{user_name}}"
               comment: FolaAdmin
               group: cloudteam
-
+              
 - hosts: db
   become: yes
+  gather_facts: no
   tasks:
      - name: install apache
        apt: 
